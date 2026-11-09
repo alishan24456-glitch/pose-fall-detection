@@ -1,0 +1,9 @@
+opencv-python
+numpy
+# mediapipe is required ONLY for real-footage mode (--source).
+# Simulation mode (--simulate) runs without it. The script supports both
+# the classic mp.solutions Pose and the current Tasks API
+# PoseLandmarker (newer mediapipe builds removed mp.solutions); with the
+# Tasks API the pose_landmarker_lite.task model auto-downloads on first
+# use (a copy is included in this repo).
+mediapipe

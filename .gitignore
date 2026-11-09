@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+output.mp4
+events.log
+*.mp4
+!pose_landmarker_lite.task
