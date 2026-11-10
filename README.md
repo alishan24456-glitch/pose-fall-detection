@@ -70,30 +70,54 @@ mediapipe at all.
 
 ## Verified demo runs
 
-**Simulation (30 s, 900 frames):** pose estimated on **900/900 frames
-(100%)**; **370 standing, 202 sitting, 328 fallen** frames. The person
-sits 6.7–13.5 s, stands again, trips at ~18 s; **1 fall detected**
-(torso 86° at 19.5 s) and **1 FALL ALERT raised at 21.0 s** (down for
-2.0 s); longest fallen spell **10.9 s**; the run ends with the person
-still down and the alert banner showing. No false SITTING during the
-stumble, no alert for the chair-sitting spell.
+**Primary demo — REAL footage (30.1 s, his own code on natural
+footage).** The demo video (`pose-fall-detection-demo-real.mp4`) is
+assembled from two annotated real-mode outputs, nothing rendered or
+simulated:
 
-**Real footage — warehouse aisle (Pexels, free license: "Woman Shopping
-in a Grocery Store Aisle", 1280×676, first 10 s / 250 frames):** pose
-found on **250/250 frames (100%)**, all **250 STANDING**, 0 falls, 0
-alerts. The shopper walks the aisle pushing a cart the whole clip, so
-STANDING throughout is the correct reading.
+- **Warehouse aisle** (Pexels, free license: "A Man Looking at the
+  Camera while Holding Shopping Cart", 1280×676, full 20.1 s /
+  503 frames): pose found on **503/503 frames (100%)** — **498
+  standing, 5 sitting, 0 fallen**. The shopper leans on his cart and
+  walks the aisle the whole clip, so STANDING throughout is the
+  correct reading.
+- **Busy street** (Pexels, free license: "People Walking on the
+  Street" by George Morina, 1920×1080, first 10.0 s / 300 frames):
+  pose found on **154/300 frames (51.3%)** — **127 standing,
+  27 sitting, 0 fallen**. A wide, crowded shot; the tracker follows
+  one person at a time and loses the subject for a stretch
+  (3.8–8.3 s shows NO PERSON). The SITTING spell at 8.4–9.2 s is a
+  person low in frame whose knees read level with the hips.
 
-**Real footage — busy street (Pexels, free license: "People Walking on
-the Street" by George Morina, 1920×1080, first 10 s / 300 frames):**
-pose found on **154/300 frames (51.3%)** — this is a wide, crowded
-street shot with small, overlapping pedestrians and the tracker follows
-one person at a time, so it loses the subject for stretches (nothing
-detected 3.8–8.3 s). **127 standing, 27 sitting, 0 fallen, 0 alerts.**
-The brief SITTING spell at 8.4–9.2 s is a person low in frame whose
-knees read level with the hips; on a shot this busy it is as likely a
-seated passer-by as a tracking wobble, and it is reported as measured.
-No fall, no alert — correct for a street full of walking people.
+Combined, the demo covers 803 processed frames with a pose on 657
+(81.8%): 625 standing, 32 sitting. **No fall occurs in this footage,
+so no FALL ALERT fires in the demo — that is the honest result, not a
+missing feature.** Nobody in either clip falls down; the alert logic
+is verified by the simulation run below.
+
+Full-clip check of the same street video (20.9 s / 625 frames): pose
+on 240/625 frames (38.4%), 197 standing, 43 sitting, 0 fallen,
+0 alerts.
+
+**Where real mode struggles (measured, same rebuild):** a restaurant
+clip of diners seated at tables (321 frames, pose on 98.4%) read 235
+frames as FALLEN and raised 1 false alert — people leaning over a
+table defeat the torso-angle heuristic, so table scenes are out of
+scope. A high-angle crowded mall clip gave a pose on only 46/947
+frames (4.9%), and a construction-site clip on 144/951 (15.1%) with
+some spurious FALLEN frames (longest spell 1.8 s, no alert). Real
+mode needs the clear, mostly full-body single-person view described
+at the top.
+
+**Simulation — fall/alert logic verification (30 s, 900 frames):**
+pose estimated on **900/900 frames (100%)**; **370 standing,
+202 sitting, 328 fallen** frames. The person sits 6.7–13.5 s, stands
+again, trips at ~18 s; **1 fall detected** (torso 86° at 19.5 s) and
+**1 FALL ALERT raised at 21.0 s** (down for 2.0 s); longest fallen
+spell **10.9 s**; the run ends with the person still down and the
+alert banner showing. No false SITTING during the stumble, no alert
+for the chair-sitting spell. This rendered simulation is a logic
+test only — the primary demo above is the real-footage one.
 
 ## Real-mode note (Linux)
 
